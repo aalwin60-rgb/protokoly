@@ -1,9 +1,19 @@
 import streamlit as st
-import google.generative_ai as genai
+import os
+
+# --- SEKRETNA INSTALACJA ---
+# Jeśli serwer nie widzi Google, instalujemy to "na chama"
+try:
+    import google.generative_ai as genai
+except ImportError:
+    os.system("pip install google-generative-ai")
+    import google.generative_ai as genai
+# ---------------------------
 
 st.set_page_config(page_title="Mój Asystent", page_icon="🤖")
 
 st.title("Cześć Olek! 🤖")
+st.write("Wersja: Samonaprawcza")
 
 api_key = st.text_input("Podaj klucz API:", type="password")
 
