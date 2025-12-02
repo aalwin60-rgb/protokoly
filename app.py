@@ -1,31 +1,18 @@
 import streamlit as st
-import os
-import subprocess
-import sys
+import google.generative_ai as genai
 
-# --- HAKERSKA INSTALACJA BIBLIOTEKI ---
-# Sprawdzamy, czy google-generative-ai jest zainstalowane.
-# Jak nie, to instalujemy to siłą w trakcie działania.
-try:
-    import google.generative_ai as genai
-except ImportError:
-    subprocess.check_call([sys.executable, "-m", "pip", "install", "google-generative-ai"])
-    import google.generative_ai as genai
-# --------------------------------------
-
-st.set_page_config(page_title="Mój Asystent AI", page_icon="🤖")
+st.set_page_config(page_title="Mój Asystent", page_icon="🤖")
 
 st.title("Cześć Olek! 🤖")
-st.write("Jestem Twoim asystentem. Pytaj o co chcesz.")
 
-api_key = st.text_input("Wklej tutaj swój klucz API z Google:", type="password")
+api_key = st.text_input("Podaj klucz API:", type="password")
 
 if api_key:
     try:
         genai.configure(api_key=api_key)
         model = genai.GenerativeModel('gemini-1.5-flash')
         
-        pytanie = st.chat_input("Napisz wiadomość...")
+        pytanie = st.chat_input("Napisz coś...")
         
         if pytanie:
             st.chat_message("user").write(pytanie)
@@ -34,5 +21,3 @@ if api_key:
                 st.chat_message("ai").write(response.text)
     except Exception as e:
         st.error(f"Błąd: {e}")
-else:
-    st.info("👆 Wklej klucz API na górze!")
