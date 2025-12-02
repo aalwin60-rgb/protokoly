@@ -6,26 +6,19 @@ st.set_page_config(page_title="Mój Asystent AI", page_icon="🤖")
 st.title("Cześć Olek! 🤖")
 st.write("Jestem Twoim asystentem. Pytaj o co chcesz.")
 
-# Tu wpisujemy klucz, żeby było bezpiecznie i wygodnie
 api_key = st.text_input("Wklej tutaj swój klucz API z Google:", type="password")
 
 if api_key:
     try:
         genai.configure(api_key=api_key)
         model = genai.GenerativeModel('gemini-1.5-flash')
-
-        # Pole do pisania
         pytanie = st.chat_input("Napisz wiadomość...")
-
         if pytanie:
-            # Pokazujemy co napisałeś
             st.chat_message("user").write(pytanie)
-            
-            # AI myśli i odpisuje
             with st.spinner('Myślę...'):
                 response = model.generate_content(pytanie)
                 st.chat_message("ai").write(response.text)
     except Exception as e:
-        st.error(f"Coś poszło nie tak z kluczem: {e}")
+        st.error(f"Błąd klucza: {e}")
 else:
-    st.info("👆 Najpierw wklej swój klucz API na górze, żebyśmy mogli pogadać!")
+    st.info("👆 Wklej klucz API na górze!")
